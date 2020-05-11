@@ -1,4 +1,5 @@
 import 'package:bebetter/screens/analysis_screen.dart';
+import 'package:bebetter/screens/app_drawer.dart';
 import 'package:bebetter/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,20 +10,29 @@ class NavigationBarScreen extends StatefulWidget {
 
 class _NavigationBarScreenState extends State<NavigationBarScreen> {
   int pageIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           "Welcome to BeBetter",
           style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        elevation: 0,
+        elevation: 5,
+        leading: IconButton(
+          icon: Icon(Icons.menu, color: Colors.pink),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
+      drawer: Drawer(child: AppDrawer()),
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: pageIndex,

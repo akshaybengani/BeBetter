@@ -13,7 +13,13 @@ class MyApp extends StatelessWidget {
       title: 'Be Better',
       // Login Checker
       theme: ThemeData(
-        appBarTheme: AppBarTheme(elevation: 1, color: Colors.yellow.shade100),
+        appBarTheme: AppBarTheme(
+          elevation: 1,
+          color: Colors.yellow.shade100,
+          iconTheme: IconThemeData(
+            color: Colors.pink,
+          ),
+        ),
         textTheme: TextTheme(
           bodyText1: TextStyle(color: Colors.black, fontSize: 14),
           subtitle1: TextStyle(color: Colors.black, fontSize: 14),
