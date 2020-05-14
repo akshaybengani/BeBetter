@@ -15,6 +15,28 @@ dependencies:
   cupertino_icons: ^0.1.3
   # For Rendereing SVG Pictures in code
   flutter_svg: ^0.17.4
+  # To Show toast
+  fluttertoast: ^3.1.3
+  # For Copy Paste Clipboard functionality
+  flutter_clipboard_manager: ^0.0.2
+  # For Storing in device local
+  shared_preferences:
+  # For accessing hasura and database
+  graphql: ^3.0.0
+  # For making http request to hasura
+  http: 0.12.0+4
+  # For parsing graphql data
+  gql: 0.12.2
+  # Hasura package for accessing our server
+  hasura_connect:
+  # For cool and awesome font icons
+  font_awesome_flutter: ^8.8.1
+  # Bloc for processing every logic
+  bloc: ^3.0.0
+  # To use bloc tech in flutter
+  flutter_bloc: ^3.2.0
+  
+
 
 dev_dependencies:
   flutter_test:
