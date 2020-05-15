@@ -31,6 +31,20 @@ class ApiService {
     return result['data'];
   }
 
+  Future<dynamic> returningMutation(query, variables) async {
+    connect.addHeader(serverKeys.headerKey, serverKeys.adminSecret);
+
+    variables = variables != null ? variables : <String, dynamic>{};
+    var result = {};
+    try {
+      result = await connect.mutation(query, variables: variables);
+    } on HasuraError catch (err) {
+      print("Hasura mutation error: ${err.message}");
+      return err.message;
+    }
+    return result['data'];
+  }
+
   Snapshot subscribe(query, variables, key) {
     connect.addHeader(serverKeys.headerKey, serverKeys.adminSecret);
     variables = variables != null ? variables : <String, dynamic>{};

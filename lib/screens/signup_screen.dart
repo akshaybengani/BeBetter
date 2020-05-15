@@ -1,7 +1,10 @@
 import 'package:bebetter/repositories/user_repository.dart';
 import 'package:bebetter/screens/navigationbar_screen.dart';
+import 'package:bebetter/services/share_prefs_service.dart';
 import 'package:bebetter/widgets/util/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_clipboard_manager/flutter_clipboard_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -38,49 +41,105 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 3, color: Colors.pink),
-              borderRadius: BorderRadius.circular(15),
+      body: Container(
+        margin: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "We dont need your personal details\nWe just track your every activity and expense you do in your daily life\n",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.center,
             ),
-            padding: EdgeInsets.all(16),
-            margin: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
-                TextField(
-                  decoration: InputDecoration(labelText: "Access Key"),
-                  controller: _accessKeyController,
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
+            TextField(
+              cursorColor: Colors.black,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                labelText: "Create or enter your Access Key",
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
-                RaisedButton(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
+                helperText: "Keep it safe unless you will loose your data",
+                helperMaxLines: 2,
+                helperStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.content_paste,
+                    color: Colors.black,
+                  ),
                   onPressed: () async {
-                    await onPressed();
+                    _accessKeyController.text =
+                        await FlutterClipboardManager.copyFromClipBoard();
                   },
-                  child: Text("Login"),
-                )
-              ],
+                ),
+              ),
+              controller: _accessKeyController,
+              keyboardType: TextInputType.text,
             ),
-          ),
-        ],
+            SizedBox(height: 20),
+            RaisedButton(
+              color: Colors.greenAccent,
+              onPressed: () async {
+                await onPressed();
+              },
+              child: Text(
+                "Validate".toUpperCase(),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Future<void> onPressed() async {
     if (_accessKeyController.text.isNotEmpty) {
-      await userRepository.createUserByAccessKey(_accessKeyController.text).then((_){
-        print(_);
+      await userRepository
+          .createUserByAccessKey(_accessKeyController.text)
+          .then((result) async {
+        if (result == "existing_user") {
+          // User Already Exists
+          await userRepository
+              .getUserByAccessKey(_accessKeyController.text)
+              .then((user) async {
+            userRepository.setUserIdInSharePref(user.id);
+            print(await userRepository.getUserIdFromSharePref());
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NavigationBarScreen(),
+              ),
+            );
+          });
+        } else if (result == null) {
+          showToast("Some Problem occured");
+        } else {
+          // User Not Exisit new user created
+          showToast(result);
+
+          userRepository.setUserIdInSharePref(result);
+          print(await userRepository.getUserIdFromSharePref());
+
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => NavigationBarScreen(),
+            ),
+          );
+        }
+
+        closeKeyboard(context);
+        _accessKeyController.clear();
       });
     } else {
       showToast("Chutiye Access Key mae kuch toh daal");
@@ -88,18 +147,13 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-
 //.then((_) {
-        
-      //   closeKeyboard(context);
-      //   _accessKeyController.clear();
-       
-      //   Navigator.of(context).push(MaterialPageRoute(
-      //     builder: (context) => NavigationBarScreen(),
-      //   ));
 
-      // }).catchError((onError) {
-      //   print(onError);
-      //   closeKeyboard(context);
-      //   _accessKeyController.clear();
-      // });
+//   closeKeyboard(context);
+//   _accessKeyController.clear();
+
+// }).catchError((onError) {
+//   print(onError);
+//   closeKeyboard(context);
+//   _accessKeyController.clear();
+// });
