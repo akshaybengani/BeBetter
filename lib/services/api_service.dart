@@ -2,11 +2,12 @@ import 'package:bebetter/keys/server_keys.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 
 class ApiService {
-
-  HasuraConnect connect = HasuraConnect(ServerKeys().hasuraEndpoint);
+  ApiService._init();
+  HasuraConnect connect =
+      HasuraConnect("https://bebetter.herokuapp.com/v1/graphql");
 
   Future<dynamic> query(query, variables) async {
-    connect.addHeader(ServerKeys().headerKey, ServerKeys().adminSecret);
+    connect.addHeader(serverKeys.headerKey, serverKeys.adminSecret);
     variables = variables != null ? variables : <String, dynamic>{};
     var result = {};
     try {
@@ -18,7 +19,8 @@ class ApiService {
   }
 
   Future<dynamic> mutation(query, variables) async {
-    connect.addHeader(ServerKeys().headerKey, ServerKeys().adminSecret);
+    connect.addHeader(serverKeys.headerKey, serverKeys.adminSecret);
+
     variables = variables != null ? variables : <String, dynamic>{};
     var result = {};
     try {
@@ -30,7 +32,7 @@ class ApiService {
   }
 
   Snapshot subscribe(query, variables, key) {
-    connect.addHeader(ServerKeys().headerKey, ServerKeys().adminSecret);
+    connect.addHeader(serverKeys.headerKey, serverKeys.adminSecret);
     variables = variables != null ? variables : <String, dynamic>{};
     try {
       return connect.subscription(query, variables: variables, key: key);
@@ -40,3 +42,4 @@ class ApiService {
     }
   }
 }
+ApiService apiService = ApiService._init();
