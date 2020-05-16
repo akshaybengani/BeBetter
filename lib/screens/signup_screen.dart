@@ -116,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
             userRepository.setUserIdInSharePref(user.id);
             print(await userRepository.getUserIdFromSharePref());
 
-            Navigator.of(context).push(
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => NavigationBarScreen(),
               ),
@@ -131,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
           userRepository.setUserIdInSharePref(result);
           print(await userRepository.getUserIdFromSharePref());
 
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => NavigationBarScreen(),
             ),

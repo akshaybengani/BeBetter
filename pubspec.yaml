@@ -35,6 +35,8 @@ dependencies:
   bloc: ^3.0.0
   # To use bloc tech in flutter
   flutter_bloc: ^3.2.0
+  # For choosing images
+  image_picker: ^0.6.6+1
   
 
 
