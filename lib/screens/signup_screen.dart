@@ -112,9 +112,9 @@ class _SignupScreenState extends State<SignupScreen> {
           // User Already Exists
           await userRepository
               .getUserByAccessKey(_accessKeyController.text)
-              .then((user) async {
-            userRepository.setUserIdInSharePref(user.id);
-            print(await userRepository.getUserIdFromSharePref());
+              .then((user) {
+            userRepository.setPrefs(user.id);
+            print(userRepository.getUserIdFromPrefs());
 
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
@@ -128,8 +128,8 @@ class _SignupScreenState extends State<SignupScreen> {
           // User Not Exisit new user created
           showToast(result);
 
-          userRepository.setUserIdInSharePref(result);
-          print(await userRepository.getUserIdFromSharePref());
+          userRepository.setPrefs(result);
+          print(userRepository.getUserIdFromPrefs());
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -146,14 +146,3 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 }
-
-//.then((_) {
-
-//   closeKeyboard(context);
-//   _accessKeyController.clear();
-
-// }).catchError((onError) {
-//   print(onError);
-//   closeKeyboard(context);
-//   _accessKeyController.clear();
-// });

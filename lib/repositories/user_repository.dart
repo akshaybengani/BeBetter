@@ -3,17 +3,22 @@ import 'package:bebetter/graphql/query/user_query.dart';
 import 'package:bebetter/models/user.dart';
 import 'package:bebetter/services/api_service.dart';
 import 'package:bebetter/services/share_prefs_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   UserRepository._init();
 
-  void setUserIdInSharePref(String userId) {
-    sharePrefsService.setString(key: "userId", value: userId);
+  SharedPreferences prefs = SharedPreferencesService.prefs;
+
+  setPrefs(String userId) async {
+    await prefs.setString('userId', userId);
+    return userId;
   }
 
-  Future<String> getUserIdFromSharePref() async {
-    return await sharePrefsService.getString(key: "userId");
+  String getUserIdFromPrefs() {
+    return prefs.getString('userId');
   }
+
 
   Future<User> getUserByAccessKey(accessKey) async {
     final response = await apiService.query(getUserByIdQuery, {"access_key": accessKey});

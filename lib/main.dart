@@ -1,7 +1,13 @@
+import 'package:bebetter/repositories/user_repository.dart';
+import 'package:bebetter/screens/navigationbar_screen.dart';
 import 'package:bebetter/screens/signup_screen.dart';
+import 'package:bebetter/services/share_prefs_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferencesService.prefs = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
@@ -25,7 +31,9 @@ class MyApp extends StatelessWidget {
           subtitle1: TextStyle(color: Colors.black, fontSize: 14),
         ),
       ),
-      home: SignupScreen(),
+      home: userRepository.getUserIdFromPrefs() == null
+          ? SignupScreen()
+          : NavigationBarScreen(),
     );
   }
 }

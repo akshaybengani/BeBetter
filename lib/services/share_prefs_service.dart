@@ -1,18 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharePrefsService{
+class SharedPreferencesService {
+  static final SharedPreferencesService _singleton = SharedPreferencesService._internal();
+  static SharedPreferences prefs;
 
-  SharePrefsService._init();
-
-   setString({String key, String value}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
+  factory SharedPreferencesService() {
+    return _singleton;
   }
-
-  Future<String> getString({String key}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
-  }
-
+  SharedPreferencesService._internal();
 }
-SharePrefsService sharePrefsService = SharePrefsService._init();
