@@ -1,48 +1,49 @@
-import 'package:bebetter/models/expense_type.dart';
+import 'package:bebetter/models/quantity_type.dart';
 import 'package:flutter/material.dart';
 
-class ExpenseTypeToggleButton extends StatelessWidget {
+class QuantityTypeToggleButton extends StatelessWidget {
   
-  final ExpenseType expenseType;
-  final Function(ExpenseType) onToggleChange;
+  final QuantityType quantityType;
+  final Function(QuantityType) onToggleChange;
 
-  ExpenseTypeToggleButton({this.expenseType, this.onToggleChange});
+  QuantityTypeToggleButton({this.quantityType, this.onToggleChange});
 
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
       constraints: BoxConstraints(maxHeight: 40),
       children: <Widget>[
+        
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Expense".toUpperCase(),
+            "Kg".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Income".toUpperCase(),
+            "Pack".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Transfer".toUpperCase(),
+            "Li".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ],
       onPressed: (int index){
-        onToggleChange(expenseTypeFromIndex(index));
+        onToggleChange(quantityTypeFromIndex(index));
       },
-      isSelected: isSelectedEnum(expenseType),
+      isSelected: isSelectedEnum(quantityType),
       disabledColor: Colors.white,
       selectedColor: Colors.white,
       color: Colors.black,
-      fillColor: expenseTypeToColor(expenseType),
+      fillColor: quantityTypeToColor(quantityType),
       borderColor: Colors.black,
       borderRadius: BorderRadius.circular(15),
       borderWidth: 2,

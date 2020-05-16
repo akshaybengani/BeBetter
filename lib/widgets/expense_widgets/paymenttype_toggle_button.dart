@@ -1,12 +1,12 @@
-import 'package:bebetter/models/expense_type.dart';
+import 'package:bebetter/models/payment_type.dart';
 import 'package:flutter/material.dart';
 
-class ExpenseTypeToggleButton extends StatelessWidget {
+class PaymentTypeToggleButton extends StatelessWidget {
   
-  final ExpenseType expenseType;
-  final Function(ExpenseType) onToggleChange;
+  final PaymentType paymentType;
+  final Function(PaymentType) onToggleChange;
 
-  ExpenseTypeToggleButton({this.expenseType, this.onToggleChange});
+  PaymentTypeToggleButton({this.paymentType, this.onToggleChange});
 
   @override
   Widget build(BuildContext context) {
@@ -16,33 +16,33 @@ class ExpenseTypeToggleButton extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Expense".toUpperCase(),
+            "Upi".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Income".toUpperCase(),
+            "Cash".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           padding: EdgeInsets.all(8),
           child: Text(
-            "Transfer".toUpperCase(),
+            "Paytm".toUpperCase(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ],
       onPressed: (int index){
-        onToggleChange(expenseTypeFromIndex(index));
+        onToggleChange(paymentTypeFromIndex(index));
       },
-      isSelected: isSelectedEnum(expenseType),
+      isSelected: isSelectedEnum(paymentType),
       disabledColor: Colors.white,
       selectedColor: Colors.white,
       color: Colors.black,
-      fillColor: expenseTypeToColor(expenseType),
+      fillColor: paymentTypeToColor(paymentType),
       borderColor: Colors.black,
       borderRadius: BorderRadius.circular(15),
       borderWidth: 2,

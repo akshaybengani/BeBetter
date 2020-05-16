@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(width: 3, color: Colors.black),
+                          border: Border.all(width: 2, color: Colors.black),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         padding: EdgeInsets.all(16),
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(width: 3, color: Colors.black),
+                          border: Border.all(width: 2, color: Colors.black),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         padding: EdgeInsets.all(16),
@@ -101,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(width: 3, color: Colors.black),
+                          border: Border.all(width: 2, color: Colors.black),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         padding: EdgeInsets.all(16),
@@ -134,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(width: 3, color: Colors.black),
+                          border: Border.all(width: 2, color: Colors.black),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         padding: EdgeInsets.all(16),

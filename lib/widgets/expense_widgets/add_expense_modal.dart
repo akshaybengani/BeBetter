@@ -1,7 +1,12 @@
 import 'dart:io';
 
-import 'package:bebetter/models/expense.dart';
+import 'package:bebetter/models/expense_type.dart';
+import 'package:bebetter/models/payment_type.dart';
+import 'package:bebetter/models/quantity_type.dart';
 import 'package:bebetter/widgets/expense_widgets/expensetype_toggle_button.dart';
+import 'package:bebetter/widgets/expense_widgets/increment_decrement_textfield.dart';
+import 'package:bebetter/widgets/expense_widgets/paymenttype_toggle_button.dart';
+import 'package:bebetter/widgets/expense_widgets/quantitytype_toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,10 +28,13 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
   // Expense Description
   // Expense Category
   ExpenseType expenseType = ExpenseType.expense;
+  PaymentType paymentType = PaymentType.upi;
+  QuantityType quantityType = QuantityType.pack;
   TextEditingController nameController, amountController;
   FocusNode amountFocusNode = FocusNode();
   DateTime selectedDateAndTime;
   File selectedImage;
+  int quantityCount = 0;
 
   @override
   void initState() {
@@ -47,14 +55,14 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-        primaryColor: Expense.expenseTypeToColor(expenseType),
+        primaryColor: expenseTypeToColor(expenseType),
       ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: Expense.expenseTypeToColor(expenseType),
-            width: 5,
+            color: expenseTypeToColor(expenseType),
+            width: 2,
           ),
           borderRadius: BorderRadius.circular(15),
         ),
@@ -67,12 +75,14 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "Track Your Finance",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                  ExpenseTypeToggleButton(
+                    expenseType: expenseType,
+                    onToggleChange: (ExpenseType et) {
+                      setState(() {
+                        expenseType = et;
+                        print(et.toShortString());
+                      });
+                    },
                   ),
                   Expanded(child: SizedBox()),
                   IconButton(
@@ -106,15 +116,43 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                 ],
               ),
             ),
-            ExpenseTypeToggleButton(
-              expenseType: expenseType,
-              onToggleChange: (ExpenseType et) {
-                setState(() {
-                  expenseType = et;
-                  print(et.toShortString());
-                });
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                PaymentTypeToggleButton(
+                  paymentType: paymentType,
+                  onToggleChange: (PaymentType pt) {
+                    setState(() {
+                      paymentType = pt;
+                      print(pt.toShortString());
+                    });
+                  },
+                ),
+                QuantityTypeToggleButton(
+                  quantityType: quantityType,
+                  onToggleChange: (QuantityType qt) {
+                    setState(() {
+                      quantityType = qt;
+                      print(qt.toShortString());
+                    });
+                  },
+                )
+              ],
             ),
+            SizedBox(height: 5),
+            Row(children: <Widget>[
+             Expanded(child: SizedBox()), 
+              IncrementDecrementTextField(
+                  count: quantityCount,
+                  color: quantityTypeToColor(quantityType),
+                  onCountChange: (int change) {
+                    setState(() {
+                      quantityCount += change;
+                    });
+                  },
+                ),
+                SizedBox(width: 10),
+            ],),
             SizedBox(height: 10),
             TextField(
               textCapitalization: TextCapitalization.words,
@@ -150,8 +188,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                   margin: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Expense.expenseTypeToColor(expenseType),
-                        width: 2),
+                        color: expenseTypeToColor(expenseType), width: 2),
                   ),
                   width: 80,
                   height: 70,
@@ -169,7 +206,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                       child: selectedImage == null
                           ? Icon(
                               Icons.photo_library,
-                              color: Expense.expenseTypeToColor(expenseType),
+                              color: expenseTypeToColor(expenseType),
                               size: 40,
                             )
                           : Image.file(selectedImage),
@@ -183,7 +220,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               icon: Icon(FontAwesomeIcons.wallet, color: Colors.white),
-              color: Expense.expenseTypeToColor(expenseType),
+              color: expenseTypeToColor(expenseType),
               label: Text(
                 "\tAdd ".toUpperCase() +
                     expenseType.toShortString().toUpperCase(),
